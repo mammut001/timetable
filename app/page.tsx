@@ -3,7 +3,9 @@ import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Calend
 import React, { useState } from "react"
 import {DatePicker} from "@nextui-org/react";
 import isoWeek from 'dayjs/plugin/isoWeek';
+import { CiUser } from "react-icons/ci";
 
+import {Button} from "@nextui-org/react";
 import dayjs from "dayjs";
 import { useDateStore } from "@/app/store/useDateStore";
 
@@ -23,12 +25,17 @@ export default function Home() {
 
   return (
     <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-      <DatePicker
-        label="Select date"
-        value={currDate}
-        onChange={handleDateSelect}
-        className="self-start max-w-[284px]"
-      />
+      <div className="flex flex-row justify-between items-start w-full ">
+        <DatePicker
+          label="Select date"
+          value={currDate}
+          onChange={handleDateSelect}
+          className="self-start max-w-[284px]"
+        />
+        <Button className="self-end" color="success" endContent={<CiUser/>}>
+          Add
+        </Button>
+      </div>
 
       <Table aria-label="Example static collection table">
         <TableHeader>
