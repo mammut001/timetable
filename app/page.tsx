@@ -8,10 +8,13 @@ import { CiUser } from "react-icons/ci";
 import {Button} from "@nextui-org/react";
 import dayjs from "dayjs";
 import { useDateStore } from "@/app/store/useDateStore";
+import { AddModal } from "@/components/AddModal";
+import { useActionModalStore } from "@/app/store/useAddModalStore";
 
 export default function Home() {
   dayjs.extend(isoWeek)
   const currDate = useDateStore(state => state.selectedDate)
+  const {  toggleModal } = useActionModalStore();
 
   const startOfWeek = dayjs(currDate.toString()).startOf('isoWeek')
   const weekDays = Array.from({ length: 7 }).map((_, index) =>
@@ -22,6 +25,11 @@ export default function Home() {
   const handleDateSelect = (date: CalendarDate) => {
     updateDate(date)
   };
+  const handleOpenAddModal = () =>{
+    toggleModal(true)
+  }
+
+
 
   return (
     <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
@@ -32,7 +40,7 @@ export default function Home() {
           onChange={handleDateSelect}
           className="self-start max-w-[284px]"
         />
-        <Button className="self-end" color="success" endContent={<CiUser/>}>
+        <Button onClick={handleOpenAddModal} className="self-end" color="success" endContent={<CiUser/>}>
           Add
         </Button>
       </div>
@@ -109,6 +117,7 @@ export default function Home() {
 
         </TableBody>
       </Table>
+      <AddModal/>
     </section>
   );
 }
