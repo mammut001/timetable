@@ -4,29 +4,42 @@ import React, { useState } from "react"
 import {DatePicker} from "@nextui-org/react";
 import isoWeek from 'dayjs/plugin/isoWeek';
 import { CiUser } from "react-icons/ci";
-
+import { CiEdit } from "react-icons/ci";
 import {Button} from "@nextui-org/react";
 import dayjs from "dayjs";
 import { useDateStore } from "@/app/store/useDateStore";
+import { useUpdateModalStore } from "@/app/store/useUpdateModalStore";
 import { AddModal } from "@/components/AddModal";
+import { UpdateTimeModal } from "@/components/UpdateTimeModal";
 import { useActionModalStore } from "@/app/store/useAddModalStore";
+import {Checkbox} from "@nextui-org/react";
 
 export default function Home() {
   dayjs.extend(isoWeek)
   const currDate = useDateStore(state => state.selectedDate)
-  const {  toggleModal } = useActionModalStore();
+  const { toggleAddModal } = useActionModalStore()
 
+  const { toggleUpdateModal } = useUpdateModalStore()
   const startOfWeek = dayjs(currDate.toString()).startOf('isoWeek')
   const weekDays = Array.from({ length: 7 }).map((_, index) =>
     startOfWeek.add(index, 'day').format('MM-DD')
   )
   const updateDate = useDateStore(state => state.updateDate)
 
-  const handleDateSelect = (date: CalendarDate) => {
-    updateDate(date)
-  };
+  const handleDateSelect = (date: CalendarDate | null) => {
+    if (date) {
+      updateDate(date)
+    }
+  }
+
   const handleOpenAddModal = () =>{
-    toggleModal(true)
+    toggleAddModal(true)
+  }
+
+  const handleOpenUpdateModal = () =>{
+    console.log("Opening update modal")
+    toggleUpdateModal(true)
+
   }
 
 
@@ -40,13 +53,19 @@ export default function Home() {
           onChange={handleDateSelect}
           className="self-start max-w-[284px]"
         />
-        <Button onClick={handleOpenAddModal} className="self-end" color="success" endContent={<CiUser/>}>
+        <div>
+        <Button onPress={handleOpenAddModal} className="self-end mr-2" color="success" endContent={<CiUser/>}>
           Add
         </Button>
+        <Button onPress={handleOpenUpdateModal} className="self-end" color="primary" endContent={<CiEdit/>}>
+          Update
+        </Button>
+        </div>
       </div>
 
       <Table aria-label="Example static collection table">
         <TableHeader>
+          <TableColumn key="select">Select</TableColumn>
           <TableColumn key="name">NAME</TableColumn>
           <TableColumn key="role">ROLE</TableColumn>
           <TableColumn key="status">STATUS</TableColumn>
@@ -60,8 +79,11 @@ export default function Home() {
 
         </TableHeader>
         <TableBody>
+          
           <TableRow key="1">
-
+            <TableCell>
+              <Checkbox defaultSelected />
+            </TableCell>
             <TableCell draggable={true} className="cursor-pointer">Tony Reichert</TableCell>
             <TableCell>CEO</TableCell>
             <TableCell>Active</TableCell>
@@ -74,7 +96,11 @@ export default function Home() {
             <TableCell>6-3</TableCell>
 
           </TableRow>
+          
           <TableRow key="2">
+            <TableCell>
+              <Checkbox defaultSelected />
+            </TableCell>
             <TableCell draggable={true} className="cursor-pointer">Zoey Lang</TableCell>
             <TableCell>Technical Lead</TableCell>
             <TableCell> </TableCell>
@@ -89,6 +115,9 @@ export default function Home() {
 
           </TableRow>
           <TableRow key="3">
+            <TableCell>
+              <Checkbox defaultSelected />
+            </TableCell>
             <TableCell draggable={true} className="cursor-pointer">Jane Fisher</TableCell>
             <TableCell>Senior Developer</TableCell>
             <TableCell>Active</TableCell>
@@ -102,6 +131,9 @@ export default function Home() {
 
           </TableRow>
           <TableRow key="4">
+            <TableCell>
+              <Checkbox defaultSelected />
+            </TableCell>
             <TableCell draggable={true} className="cursor-pointer">William Howard</TableCell>
             <TableCell>Community Manager</TableCell>
             <TableCell>Vacation</TableCell>
@@ -118,6 +150,7 @@ export default function Home() {
         </TableBody>
       </Table>
       <AddModal/>
+      <UpdateTimeModal/>
     </section>
   );
 }

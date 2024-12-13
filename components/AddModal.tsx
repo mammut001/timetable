@@ -15,22 +15,23 @@ import {Input} from "@nextui-org/react";
 import { useState } from "react";
 import { Key } from "react"
 export const AddModal = () => {
-  const { modalStatus, toggleModal } = useActionModalStore();
+  const { modalStatus, toggleAddModal } = useActionModalStore();
   const [role, setSelectRole] = useState<string | null>(null)
 
-  const handleOpenChange = (isOpen: boolean) => {
-    toggleModal(isOpen)
+  const handleAddModalOpenChange = (isOpen: boolean) => {
+    toggleAddModal(isOpen)
   }
+
   const handleOnSelect = (key:Key)=>{
     setSelectRole(String(key))
   }
   return (
     <>
-      <Modal isOpen={modalStatus} onOpenChange={handleOpenChange}>
+      <Modal isOpen={modalStatus} onOpenChange={handleAddModalOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Details</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1 ml-2">Details</ModalHeader>
               <ModalBody>
                 <Input type="text" label="Name" />
                 <Input type="email" label="Email" />
