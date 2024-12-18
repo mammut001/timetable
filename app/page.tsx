@@ -13,6 +13,11 @@ import { AddModal } from "@/components/AddModal";
 import { UpdateTimeModal } from "@/components/UpdateTimeModal";
 import { useActionModalStore } from "@/app/store/useAddModalStore";
 import {Checkbox} from "@nextui-org/react";
+import {Tabs, Tab} from "@nextui-org/react";
+
+import { collection, getDocs, addDoc } from 'firebase/firestore';
+import {auth, db } from "@/lib/firebaseConfig"
+
 
 export default function Home() {
   dayjs.extend(isoWeek)
@@ -41,7 +46,14 @@ export default function Home() {
     toggleUpdateModal(true)
 
   }
-
+  const fetchData = async () => {
+    const querySnapshot = await getDocs(collection(db, ' user_data'));
+    querySnapshot.forEach((doc) => {
+      console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
+    
+    })
+  }
+  
 
 
   return (
@@ -54,7 +66,7 @@ export default function Home() {
           className="self-start max-w-[284px]"
         />
         <div>
-        <Button onPress={handleOpenAddModal} className="self-end mr-2" color="success" endContent={<CiUser/>}>
+        <Button onPress={fetchData} className="self-end mr-2" color="success" endContent={<CiUser/>}>
           Add
         </Button>
         <Button onPress={handleOpenUpdateModal} className="self-end" color="primary" endContent={<CiEdit/>}>
@@ -63,20 +75,14 @@ export default function Home() {
         </div>
       </div>
 
-      <Table aria-label="Example static collection table">
-        <TableHeader>
-          <TableColumn key="select">Select</TableColumn>
-          <TableColumn key="name">NAME</TableColumn>
-          <TableColumn key="role">ROLE</TableColumn>
-          <TableColumn key="status">STATUS</TableColumn>
-          <TableColumn key="status">Mon|{weekDays[0]}</TableColumn>
-          <TableColumn key="status">Tue|{weekDays[1]}</TableColumn>
-          <TableColumn key="status">Wed|{weekDays[2]}</TableColumn>
-          <TableColumn key="status">Thu{weekDays[3]}</TableColumn>
-          <TableColumn key="status">Fri{weekDays[4]}</TableColumn>
-          <TableColumn key="status">Sat|{weekDays[5]}</TableColumn>
-          <TableColumn key="status">Sun|{weekDays[6]}</TableColumn>
-
+    <Tabs aria-label="Tabs" className="w-full">
+      <Tab key="users" title="Users" className="w-full">
+          <Table aria-label="Example static collection table">
+            <TableHeader>
+            <TableColumn key="select">Select</TableColumn>
+            <TableColumn key="name">NAME</TableColumn>
+            <TableColumn key="role">ROLE</TableColumn>
+            <TableColumn key="status">STATUS</TableColumn>
         </TableHeader>
         <TableBody>
           
@@ -87,13 +93,6 @@ export default function Home() {
             <TableCell draggable={true} className="cursor-pointer">Tony Reichert</TableCell>
             <TableCell>CEO</TableCell>
             <TableCell>Active</TableCell>
-            <TableCell>6-3</TableCell>
-            <TableCell>6-3</TableCell>
-            <TableCell>6-3</TableCell>
-            <TableCell>6-3</TableCell>
-            <TableCell>6-3</TableCell>
-            <TableCell>6-3</TableCell>
-            <TableCell>6-3</TableCell>
 
           </TableRow>
           
@@ -103,15 +102,7 @@ export default function Home() {
             </TableCell>
             <TableCell draggable={true} className="cursor-pointer">Zoey Lang</TableCell>
             <TableCell>Technical Lead</TableCell>
-            <TableCell> </TableCell>
-            <TableCell>6-3</TableCell>
-            <TableCell>6-3</TableCell>
-            <TableCell>6-3</TableCell>
-            <TableCell>6-3</TableCell>
-            <TableCell>6-3</TableCell>
-            <TableCell>6-3</TableCell>
-
-            <TableCell>6-3</TableCell>
+            <TableCell> Nav</TableCell>
 
           </TableRow>
           <TableRow key="3">
@@ -121,13 +112,6 @@ export default function Home() {
             <TableCell draggable={true} className="cursor-pointer">Jane Fisher</TableCell>
             <TableCell>Senior Developer</TableCell>
             <TableCell>Active</TableCell>
-            <TableCell>6-3</TableCell>
-            <TableCell>6-3</TableCell>
-            <TableCell>6-3</TableCell>
-            <TableCell>6-3</TableCell>
-            <TableCell>6-3</TableCell>
-            <TableCell>6-3</TableCell>
-            <TableCell>6-3</TableCell>
 
           </TableRow>
           <TableRow key="4">
@@ -137,20 +121,94 @@ export default function Home() {
             <TableCell draggable={true} className="cursor-pointer">William Howard</TableCell>
             <TableCell>Community Manager</TableCell>
             <TableCell>Vacation</TableCell>
-            <TableCell>6-3</TableCell>
-            <TableCell>6-3</TableCell>
-            <TableCell>6-3</TableCell>
-            <TableCell>6-3</TableCell>
-            <TableCell>6-3</TableCell>
-            <TableCell>6-3</TableCell>
-            <TableCell>6-3</TableCell>
 
           </TableRow>
 
         </TableBody>
-      </Table>
+          </Table>
+      </Tab>
+        <Tab key="availability" title="Availability" className="w-full">
+        <Table aria-label="Example static collection table">
+              <TableHeader>
+                <TableColumn key="select">Select</TableColumn>
+
+                <TableColumn key="status">Mon|{weekDays[0]}</TableColumn>
+                <TableColumn key="status">Tue|{weekDays[1]}</TableColumn>
+                <TableColumn key="status">Wed|{weekDays[2]}</TableColumn>
+                <TableColumn key="status">Thu{weekDays[3]}</TableColumn>
+                <TableColumn key="status">Fri{weekDays[4]}</TableColumn>
+                <TableColumn key="status">Sat|{weekDays[5]}</TableColumn>
+                <TableColumn key="status">Sun|{weekDays[6]}</TableColumn>
+
+              </TableHeader>
+              <TableBody>
+                
+                <TableRow key="1">
+                  <TableCell>
+                    <Checkbox defaultSelected />
+                  </TableCell>
+
+                  <TableCell>6-3</TableCell>
+                  <TableCell>6-3</TableCell>
+                  <TableCell>6-3</TableCell>
+                  <TableCell>6-3</TableCell>
+                  <TableCell>6-3</TableCell>
+                  <TableCell>6-3</TableCell>
+                  <TableCell>6-3</TableCell>
+
+                </TableRow>
+                
+                <TableRow key="2">
+                  <TableCell>
+                    <Checkbox defaultSelected />
+                  </TableCell>
+
+                  <TableCell>6-3</TableCell>
+                  <TableCell>6-3</TableCell>
+                  <TableCell>6-3</TableCell>
+                  <TableCell>6-3</TableCell>
+                  <TableCell>6-3</TableCell>
+                  <TableCell>6-3</TableCell>
+
+                  <TableCell>6-3</TableCell>
+
+                </TableRow>
+                <TableRow key="3">
+                  <TableCell>
+                    <Checkbox defaultSelected />
+                  </TableCell>
+
+                  <TableCell>6-3</TableCell>
+                  <TableCell>6-3</TableCell>
+                  <TableCell>6-3</TableCell>
+                  <TableCell>6-3</TableCell>
+                  <TableCell>6-3</TableCell>
+                  <TableCell>6-3</TableCell>
+                  <TableCell>6-3</TableCell>
+
+                </TableRow>
+                <TableRow key="4">
+                  <TableCell>
+                    <Checkbox defaultSelected />
+                  </TableCell>
+
+                  <TableCell>6-3</TableCell>
+                  <TableCell>6-3</TableCell>
+                  <TableCell>6-3</TableCell>
+                  <TableCell>6-3</TableCell>
+                  <TableCell>6-3</TableCell>
+                  <TableCell>6-3</TableCell>
+                  <TableCell>6-3</TableCell>
+
+                </TableRow>
+
+              </TableBody>
+            </Table>
+        </Tab>
+      </Tabs>
+ 
       <AddModal/>
       <UpdateTimeModal/>
     </section>
-  );
+  )
 }
