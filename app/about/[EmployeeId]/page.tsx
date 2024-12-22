@@ -4,9 +4,11 @@ import { Button, TimeInput } from "@nextui-org/react"
 import { FaPlus } from "react-icons/fa"
 import { ZonedDateTime } from "@internationalized/date"
 import { useState, useEffect } from "react"
+import { useParams } from "next/navigation";
+export default function EmployeePage() {
+  const { EmployeeId } = useParams()
 
-export default function EmployeePage({ params }: { params: { EmployeeId: string } }) {
-  const employeeId = decodeURIComponent(params.EmployeeId)
+  const employeeId = decodeURIComponent((EmployeeId as string) ||"Unknown ID")
   const [startTime, setStartTime] = useState<ZonedDateTime | null>(null)
   const [endTime, setEndTime] = useState<ZonedDateTime | null>(null)
   const [totalHours, setTotalHours] = useState<string>("0.00")

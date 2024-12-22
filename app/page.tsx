@@ -65,9 +65,9 @@ export default function Home() {
 
     const users = userSnapShot.docs.map((doc) => (
       {
-        id: doc.id, 
+        id: doc.id,
         email: doc.data().email,
-        name: doc.data().name, 
+        name: doc.data().name,
         role: doc.data().role
       }))
 
@@ -82,20 +82,21 @@ export default function Home() {
         tel: doc.data().tel
       }))
 
-    
+
     const data = employeeAvailabilitySnapshot.docs.map((doc)=>{
       const availability = doc.data()
       const userData = users.find((user)=> user.email === availability.email)
       return {
         name: userData?.name,
         role: userData?.role,
+        id: doc.id,
         ...availability,
       }
     })
     setEmployees(employees)
     setAvailability(data)
   }
-  
+
 
 
   return (
@@ -106,6 +107,7 @@ export default function Home() {
           value={currDate}
           onChange={handleDateSelect}
           className="self-start max-w-[284px]"
+          disableAnimation={true}
         />
         <div>
         <Button className="self-end mr-2" color="success" endContent={<CiUser/>}>
@@ -133,7 +135,6 @@ export default function Home() {
           {
 
             employees.map((employee)=>(
-
               <TableRow key={employee.id}>
                 <TableCell>
                   <Checkbox defaultSelected />
@@ -170,7 +171,7 @@ export default function Home() {
               <TableBody>
                 {
                   availability.map((user)=>(
-                    
+
                     <TableRow key={user.id}>
                       <TableCell>
                         <Checkbox defaultSelected />
@@ -188,13 +189,13 @@ export default function Home() {
                     </TableRow>
                   ))
                 }
-                
-             
+
+
               </TableBody>
             </Table>
         </Tab>
       </Tabs>
- 
+
       <AddModal/>
       <UpdateTimeModal/>
     </section>
