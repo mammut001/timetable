@@ -17,7 +17,6 @@ import {Tabs, Tab} from "@nextui-org/react";
 
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from "@/lib/firebaseConfig"
-import { any } from "prop-types";
 
 
 export default function Home() {
@@ -110,7 +109,7 @@ export default function Home() {
           disableAnimation={true}
         />
         <div>
-        <Button className="self-end mr-2" color="success" endContent={<CiUser/>}>
+        <Button onPress={handleOpenAddModal} className="self-end mr-2" color="success" endContent={<CiUser/>}>
           Add
         </Button>
         <Button onPress={handleOpenUpdateModal} className="self-end" color="primary" endContent={<CiEdit/>}>
